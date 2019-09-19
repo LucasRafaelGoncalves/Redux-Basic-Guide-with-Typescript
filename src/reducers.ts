@@ -1,11 +1,6 @@
-import { VisibilityFilter, ActionType } from './actions'
+import { VisibilityFilter, IAction } from './actions'
 import { combineReducers } from 'redux'
 import { Reducer } from 'react'
-
-const initialState: IAppState = {
-    visibilityFilter: VisibilityFilter.SHOW_ALL,
-    todos: []
-}
 
 const todos: (state: ITodo[], action: IAction) => ITodo[] = (state: ITodo[] = [], action: IAction) => {
     switch (action.type) {
@@ -13,7 +8,7 @@ const todos: (state: ITodo[], action: IAction) => ITodo[] = (state: ITodo[] = []
             return [
                 ...state,
                 {
-                    text: action.payload,
+                    text: action.payload as string,
                     completed: false
                 }
             ]
@@ -31,23 +26,18 @@ const todos: (state: ITodo[], action: IAction) => ITodo[] = (state: ITodo[] = []
     }
 }
 
-const visibilityFilter: (state: keyof typeof VisibilityFilter, action: IAction) => keyof typeof VisibilityFilter =
-    (state: keyof typeof VisibilityFilter = "SHOW_ALL", action: IAction) => {
+const visibilityFilter: (state: VisibilityFilter, action: IAction) => VisibilityFilter =
+    (state: VisibilityFilter = VisibilityFilter.SHOW_ALL, action: IAction) => {
         switch (action.type) {
             case 'SET_VISIBILITY_FILTER':
-                return action.payload
+                return action.payload as VisibilityFilter
             default:
                 return state
         }
     }
 
-const todoApp: (state: IAppState, action: IAction) => IAppState = (state: IAppState = initialState, action: IAction) => ({
-    visibilityFilter: visibilityFilter(state.visibilityFilter, action),
-    todos: todos(state.todos, action)
-})
-
 interface IAppState {
-    visibilityFilter: keyof typeof VisibilityFilter
+    visibilityFilter: VisibilityFilter
     todos: ITodo[]
 }
 
@@ -56,7 +46,9 @@ interface ITodo {
     completed: boolean
 }
 
-interface IAction {
-    type: keyof typeof ActionType
-    payload: any
-}
+const todoApp = combineReducers<Reducer<IAppState, IAction>>({
+    visibilityFilter,
+    todos
+})
+
+export default todoApp
