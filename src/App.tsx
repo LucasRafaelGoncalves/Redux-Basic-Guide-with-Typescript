@@ -1,14 +1,14 @@
 import React from 'react'
-import { createStore } from 'redux'
-import todoApp from './reducers'
-import { addTodo, toggleTodo, setVisibilityFilter, VisibilityFilter } from './actions'
-
-const store = createStore(todoApp)
+import AddTodo from './containers/AddTodo'
+import VisibleTodoList from './containers/VisibleTodoList'
+import Footer from './components/Footer'
 
 const App: React.FC = () => {
   return (
     <div className="App">
-
+      <AddTodo />
+      <VisibleTodoList />
+      <Footer />
     </div>
   )
 }

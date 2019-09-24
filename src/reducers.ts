@@ -8,13 +8,14 @@ const todos: (state: ITodo[], action: IAction) => ITodo[] = (state: ITodo[] = []
             return [
                 ...state,
                 {
+                    id: state.length + 1,
                     text: action.payload as string,
                     completed: false
                 }
             ]
         case 'TOGGLE_TODO':
-            return state.reduce((acc: ITodo[], cur, index) => {
-                if (index === action.payload)
+            return state.reduce((acc: ITodo[], cur) => {
+                if (cur.id === action.payload)
                     cur.completed = !cur.completed
                 return [
                     ...acc,
@@ -36,12 +37,13 @@ const visibilityFilter: (state: VisibilityFilter, action: IAction) => Visibility
         }
     }
 
-interface IAppState {
+export interface IAppState {
     visibilityFilter: VisibilityFilter
     todos: ITodo[]
 }
 
-interface ITodo {
+export interface ITodo {
+    id: number
     text: string
     completed: boolean
 }

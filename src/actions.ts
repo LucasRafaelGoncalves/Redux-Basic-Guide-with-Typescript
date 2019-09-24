@@ -1,3 +1,5 @@
+import { ITodo } from "./reducers"
+
 export enum ActionType {
     ADD_TODO = 'ADD_TODO',
     TOGGLE_TODO = 'TOGGLE_TODO',
@@ -15,12 +17,12 @@ export enum VisibilityFilter {
     SHOW_ACTIVE = 'SHOW_ACTIVE'
 }
 
-export const addTodo: (text: string) => IAction = (text: string) => ({
+export const addTodo: (text: ITodo['text']) => IAction = (text: ITodo['text']) => ({
     type: ActionType.ADD_TODO,
     payload: text
 })
 
-export const toggleTodo: (index: number) => IAction = (index: number) => ({
+export const toggleTodo: (index: ITodo['id']) => IAction = (index: ITodo['id']) => ({
     type: ActionType.TOGGLE_TODO,
     payload: index
 })
